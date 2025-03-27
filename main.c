@@ -1,8 +1,20 @@
- #include "quotes.h"
+#include "quotes.h"
 #include <time.h>
 
 int main() {
-    char * quotes[MAX_QUOTES] = {
+    char **quotes;
+    int i;
+
+    quotes = (char **)malloc(MAX_QUOTES * sizeof(char *));
+
+    /*file = fopen(FILE_NAME, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Failed to open file %s\n", FILE_NAME);
+        free(quotes);
+        return 1;
+    }*/
+
+    const char*base_quotes[MAX_QUOTES] = {
         "Programmer - An organism that turns caffeine into code",
         "Why do programmers prefer dark mode? Because light attracts bugs.",
         "If debugging is the process of removing software bugs, then programming must be the process of putting them in.",
@@ -15,7 +27,18 @@ int main() {
         "There are only 10 types of people in the world: Those who understand binary and those who don't."
     };
 
+    for (i = 0; i < MAX_QUOTES; i++) {
+        quotes[i] = (char *)malloc((MAX_QUOTES + 1) * sizeof(char));
+        quotes[i] = base_quotes[i];
+    }
+
     srand(time(NULL));
     print_random_quote(quotes);
+
+    for (i = 0; i < MAX_QUOTES; i++) {
+        free(quotes[i]);
+    }
+    free(quotes);
+
     return 0;
 }
